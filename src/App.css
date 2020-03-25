@@ -5,142 +5,50 @@ html {
      box-sizing: inherit;
 }
  html, body {
-     width: 100%;
+     width: 1px; /*No idea why this works but it limits the width*/
      height: 100%;
      margin: 0;
      padding: 0;
-     background-image: url(https://i.imgur.com/OrtGQf6.jpg);
+     background-image: url(background.jpg);
 }
- h1 {
-     color: #ffffffad;
-     text-shadow: 2px 1px 0px #18181f82;
-     font-size: 50px;
-     font-weight: 300;
-     margin-bottom: 0;
+
+td {
+  transform: translate(10px, 10px);
 }
-/* * Styles for the deck of cards */
- ul.deck {
-     list-style-type: none;
-     display: flex;
-     flex-wrap: wrap;
-     text-align: center;
-     padding: 0 1vw 3vh 2vw;
-     width: 55vw;
-     min-width: 353px;
-     max-height: 98vh;
-     margin: 3vh auto 2vh;
-     border-radius: 10px;
-     justify-content: space-around;
-     font: 'Coda', cursive;
-     background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
-     box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.5);
+
+table {
+  transform: translate(163px, -130px);
 }
- .deck .card {
-     color: white;
-     display: inline-block;
-     width: calc( 100% * (1/4) - 4vw );
-     margin :3vh 2vw 19vh 2vw;
-     perspective: 1000px;
-     cursor: default;
-     font-size: 30px;
-     text-align: center;
+
+#scoreboard {
+  background-image: url(board.jpg);
+  transform: translate(10px, 10px);
+  width: 1508px;
+  height: 36.5vh;
 }
- .deck .back {
-     background: #02b3e4;
-     cursor: default;
+
+.player {
+  font-size: 1.8em;
+  color: whitesmoke;
 }
- .card.match > .innerCard > .back {
-     background: #02ccba;
+
+#score-header {
+  filter: invert();
+  transform: translate(10px, 10px);
+  width: 140px;
 }
-/* * Styles for the Score Panel */
- .score-panel {
-     text-align: left;
-     width: 345px;
-     margin-bottom: 10px;
+
+.star {
+    width: 42px;
+    height: 37px;
+    transform: translate(4px, 6px);
 }
- .score-panel .stars {
-     margin: 0;
-     padding: 0;
-     display: inline-block;
-     margin: 0 5px 0 0;
-}
- .score-panel .stars li {
-     list-style: none;
-     display: inline-block;
-}
- .score-panel .restart, .fa-arrow-left {
-     float: right;
-     margin-top: 3px;
-     padding-right: 17px;
-     cursor: pointer;
-}
-.new-game {
-     cursor: pointer;
-}
- .winContainer {
-     box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.17);
-     position: absolute;
-     text-align: left;
-     display: none;
-     top: 48%;
-     left: 50%;
-     transform: translate(-50%, -51%);
-     color: grey;
-     background-color: #fffefd;
-     padding-left: 34px;
-     padding-right: 139px;
-     padding-top: 30px;
-     border-radius: 10px;
-     padding-bottom: 20px;
-}
-.round-blssng {
-     color: #002c6da6;
-     font-size: 13px;
-     font-weight: bold;
-}
-.winContainer.show-win {
-     display: block;
-}
- .back > i {
-     font-size: 38px;
-}
- @media screen and (min-width: 900px) {
-     .back > i {
-         font-size: 58px !important;
-         margin-top: 6.54vh;
-    }
-     .flex1 {
-         padding-left: 4.2vw;
-         margin-bottom: 30vh;
-    }
-}
- @media screen and (max-width: 900px) {
-     .flex1, .flex2 {
-         width: 100%;
-    }
-     .flex1 {
-         order: 1;
-    }
-     .flex2 {
-         order: 2;
-    }
-     .card {
-         margin: 2vh 2vw 12vh 2vw !important;
-    }
-     .front, .back {
-         height: 80px !important;
-         line-height: 1.6 !important;
-    }
-     .deck {
-         padding-bottom: 2vh !important;
-    }
-     .back > i {
-         margin-top: 3vh;
-    }
-}
+
 /*CARD ANIMATION BASED ON https://codepen.io/Rufusmedia/pen/YpWGYB*/
  .card {
      perspective: 1000px;
+     position: absolute;
+     z-index: 100;
 }
  .card.show > .innerCard {
      transform: rotateY(180deg);
@@ -150,10 +58,6 @@ html {
      transition: 1.9s;
      transform-style: preserve-3d;
      position: relative;
-}
- .orange {
-     transition-delay: 0.27s;
-     background: rgb(255, 62, 23) !important;
 }
  .front, .back {
      backface-visibility: hidden;
@@ -174,28 +78,4 @@ html {
  .front {
      background-color: rgb(0, 19, 96);
      z-index: 2;
-}
-
-.c2 {
-  transform: translate(96px, 231px)
-}
-
-.c1 {
-  transform: translate(585px, 231px)
-
-}
-
-.c0 {
-  transform: translate(1028px, 231px)
-}
-
- .outline {
-     color: black;
-     -webkit-text-fill-color: white;
-    /* Will override color (regardless of order) */
-     -webkit-text-stroke-width: 1px;
-     -webkit-text-stroke-color: black;
-}
-.timer {
-     margin-left: 6px;
 }

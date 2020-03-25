@@ -21,8 +21,8 @@ export default class Card extends Component {
   }
 
   getDefaultPosition (index) {
-    let x = 90 + index*490;
-    let y = 231;
+    let x = 60 + index*490;
+    let y = 350;
     return {x: x, y: y}
   }
 
