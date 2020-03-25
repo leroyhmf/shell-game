@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import './App.css';
 import FileInput from './FileInput.js';
-import Game from './Game.js'
-import Scoreboard from './Scoreboard.js'
+import Game from './Game.js';
+import Scoreboard from './Scoreboard.js';
+import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome'
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 
 class App extends Component {
   constructor(props) {
@@ -14,8 +16,6 @@ class App extends Component {
        * 1: Select 3 Photos
        * 0: Error loading
        * 2: All three cards are shown
-       * 3: All three cards will now switch to flipped and can be moved around
-       * 4: All three cards are shown again
        */
       imagesBase64: [],
       error: false,
@@ -26,12 +26,19 @@ class App extends Component {
     this.updatePlayers = this.updatePlayers.bind(this);
     this.addPointToPlayer = this.addPointToPlayer.bind(this);
     this.removePointFromPlayer = this.removePointFromPlayer.bind(this);
+    this.changeAppPart = this.changeAppPart.bind(this);
   }
 
   updatePlayers(player) {
     //Also initiates player points
     this.setState({players: [...this.state.players, player],
       playerPoints: [...this.state.playerPoints, 1]})
+  }
+
+  changeAppPart(partNum) {
+    if (partNum === 1) {
+      this.setState({appPart: 1, imagesBase64: []})
+    }
   }
 
   addPointToPlayer(index) {
@@ -66,19 +73,22 @@ class App extends Component {
   }
 
   render() {
+    let display = []
     if (this.state.appPart === 1) {
-      return <div className="App">
+      display.push(<div className="App">
       <FileInput errorHandler={this.errorHandler} manageImages={this.manageImages}/>
-      </div>
+      </div>)
     }
     if (this.state.appPart > 1) {
-      return (<div><Game images={this.state.imagesBase64}/>
-        <Scoreboard updatePlayers={this.updatePlayers}
-        playerPoints={this.state.playerPoints}
-        addStarToPlayer={this.addPointToPlayer}
-        removeStarFromPlayer={this.removePointFromPlayer}
-        players={this.state.players}/></div>)
+      display.push(<div><Game images={this.state.imagesBase64}/>
+        <Icon icon={faChevronLeft} className="back-button" onClick={() => this.changeAppPart(1)}/></div>)
     }
+    display.push(<Scoreboard updatePlayers={this.updatePlayers}
+      playerPoints={this.state.playerPoints}
+      addStarToPlayer={this.addPointToPlayer}
+      removeStarFromPlayer={this.removePointFromPlayer}
+      players={this.state.players}/>)
+    return display
 
   };
 }

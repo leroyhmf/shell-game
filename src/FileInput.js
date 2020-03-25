@@ -1,4 +1,6 @@
 import React from 'react';
+import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome'
+import { faUpload } from '@fortawesome/free-solid-svg-icons'
 
 export default class FileInput extends React.Component {
   constructor(props) {
@@ -29,11 +31,11 @@ export default class FileInput extends React.Component {
 
   render() {
     return (
-      <form onChange={this.handleSubmit}>
-        <label>
-          Upload file:
-          <input type="file" ref={this.fileInput} multiple={true} accept="image/*"/>
-        </label>
+      <form onChange={this.handleSubmit} className="file-input">
+          <label for="select-images">
+            <Icon icon={faUpload}/>
+          </label>
+          <input id="select-images" type="file" ref={this.fileInput} multiple={true} accept="image/*"/>
         <br />
       </form>
     );

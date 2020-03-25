@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import Card from './Card.js'
+import Card from './Card.js';
 
 export default class Game extends Component {
   constructor(props) {
     super(props);
     this.state = {
      cardsStatus: [false, false, false],
-     //cards are not flipped originally
+     //cards are not flipped originally, images are shown
     }
     this.changeCardStatus = this.changeCardStatus.bind(this);
   }
@@ -17,7 +17,8 @@ export default class Game extends Component {
       this.setState({cardsStatus: cardsStatus})
     }
 
-  render() {
-    return this.props.images.map((src, index) => { return <Card key={`card${index+1}`} index={index} src={src}/> })
+    render() {
+    return this.props.images.map((src, index) => { return <div key={`card${index+1}`} ><Card
+      index={index} src={src}/></div> })
   }
 }

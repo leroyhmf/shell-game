@@ -9,7 +9,11 @@ html {
      height: 100%;
      margin: 0;
      padding: 0;
-     background-image: url(background.jpg);
+     background-image: url(resources/background.jpg);
+     -webkit-user-select: none;
+   -moz-user-select: -moz-none;
+    -ms-user-select: none;
+        user-select: none;
 }
 
 td {
@@ -21,7 +25,7 @@ table {
 }
 
 #scoreboard {
-  background-image: url(board.jpg);
+  background-image: url(resources/board.jpg);
   transform: translate(10px, 10px);
   width: 1508px;
   height: 36.5vh;
@@ -69,9 +73,21 @@ table {
      border-radius: 5px;
      box-shadow: 5px 14px 12px -10px rgba(0,0,0,0.55);
 }
+.file-input, .back-button {
+    transform: translate(18px, 261px);
+    position: absolute;
+    z-index: 99;
+    color: whitesmoke;
+}
+.file-input > input {
+  display: none;
+}
+input {
+  color: grey;
+}
  .back {
      background: #02b3e4;
-     background-image: url(https://i.imgur.com/ISBraTO.png);
+     background-image: url(resources/back.png);
      background-size: contain;
      transform: rotateY(180deg);
 }

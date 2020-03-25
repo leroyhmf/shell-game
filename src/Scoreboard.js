@@ -1,6 +1,6 @@
 import React from 'react';
-import players from './players.png'
-import star from './star.png'
+import players from './resources/players.png'
+import star from './resources/star.png'
 
 function Scoreboard(props) {
   //Add player by clicking the header Players
