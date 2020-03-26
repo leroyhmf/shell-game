@@ -32,7 +32,7 @@ class App extends Component {
   updatePlayers(player) {
     //Also initiates player points
     this.setState({players: [...this.state.players, player],
-      playerPoints: [...this.state.playerPoints, 1]})
+      playerPoints: [...this.state.playerPoints, 0]})
   }
 
   changeAppPart(partNum) {
