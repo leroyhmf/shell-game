@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Draggable from 'react-draggable';
 
 export default class Card extends Component {
   constructor(props) {
@@ -20,15 +19,9 @@ export default class Card extends Component {
     this.setState({open: !this.state.open})
   }
 
-  getDefaultPosition (index) {
-    let x = 60 + index*490;
-    let y = 350;
-    return {x: x, y: y}
-  }
 
   render() {
-    return <Draggable
-      defaultPosition={this.getDefaultPosition(this.props.index)}
+    return <div className="card-position" style={{transform: `translate(${this.props.cardPosition})`}}
       key={this.props.key}>
     <div className={this.generateClass(this.props.index)}>
     <div className={'innerCard'}>
@@ -39,6 +32,6 @@ export default class Card extends Component {
     src={this.props.src}
     />
     </div>
-    </div></Draggable>
+    </div></div>
   }
 }

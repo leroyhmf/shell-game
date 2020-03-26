@@ -62,7 +62,10 @@ class App extends Component {
   }
 
   manageImages(image) {
+    if (this.state.imagesBase64.length < 3) {
+    //Restrict more than 3 images
     this.setState( {imagesBase64: [...this.state.imagesBase64, image]});
+    }
     if (this.state.imagesBase64.length === 3) {
       this.setState({appPart: 2})
     }
