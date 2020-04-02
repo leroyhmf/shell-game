@@ -27,7 +27,7 @@ table {
 #scoreboard {
   background-image: url(resources/board.jpg);
   transform: translate(10px, 10px);
-  width: 1508px;
+  width: 98vw;
   height: 36.5vh;
 }
 
@@ -91,7 +91,7 @@ margin-right: 5px;
      box-shadow: 5px 14px 12px -10px rgba(0,0,0,0.55);
 }
 .file-input, .back-button {
-    transform: translate(18px, 261px);
+    transform: translate(1.19vw, 34.34vh);
     position: absolute;
     z-index: 99;
     color: whitesmoke;

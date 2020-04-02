@@ -32,9 +32,9 @@ export default class Game extends Component {
     }
 
     setInitialCardPosition(index) {
-      let x = 60 + index*490;
-      let y = 350;
-      return `${x}px, ${y}px`
+      let x = 4 + index*32;
+      let y = 46.4;
+      return `${x}vw, ${y}vh`
     }
 
     switchCardsPositions(index1, index2) {
