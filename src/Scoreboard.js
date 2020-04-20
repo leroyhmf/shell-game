@@ -12,12 +12,12 @@ function Scoreboard(props) {
     function generateStars(i) {
       let stars = [];
         for (let starNum = 0; starNum < props.playerPoints[i]; starNum++ ) {
-          stars.push (<td><img className="star" src={star}/></td>)
+          stars.push (<td><img alt="star" className="star" src={star}/></td>)
         }
         return stars
       }
 
-    return (<div id="scoreboard"><img src={players} id="score-header"
+    return (<div id="scoreboard"><img alt="players" src={players} id="score-header"
     onClick={handleHeaderClick}/>
     <table>
     {props.players.map((p, i) => <tr className={`player ${i}`}>

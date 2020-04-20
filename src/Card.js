@@ -4,7 +4,7 @@ export default class Card extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      open: true
+      open: this.props.cardsStatus
     }
     this.generateClass = this.generateClass.bind(this);
     this.updateState = this.updateState.bind(this);
@@ -26,7 +26,7 @@ export default class Card extends Component {
     <div className={this.generateClass(this.props.index)}>
     <div className={'innerCard'}>
     <div className={'back'} onDoubleClick={this.updateState}></div>
-    <img className={'front'}
+    <img alt="card front" className={'front'}
     onDoubleClick={this.updateState}
     onDragStart={function(e) {e.preventDefault()}}
     src={this.props.src}

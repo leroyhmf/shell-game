@@ -3,9 +3,6 @@ import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome'
 import { faArrowsAltH } from '@fortawesome/free-solid-svg-icons'
 
 export default class ShuffleButton extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   render() {return (
     <span className="switch-button"

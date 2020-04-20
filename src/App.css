@@ -95,7 +95,13 @@ margin-right: 5px;
     position: absolute;
     z-index: 99;
     color: whitesmoke;
+    font-size: 19px;
 }
+.file-input.extra {
+    transform: translate(3vw, 34.15vh);
+    font-size: 15.2px;
+}
+
 .file-input > input {
   display: none;
 }

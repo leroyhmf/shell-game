@@ -8,6 +8,7 @@ export default class FileInput extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.getBase64 = this.getBase64.bind(this)
     this.fileInput = React.createRef();
+    this.formClassName = this.formClassName.bind(this);
   }
 
 
@@ -29,10 +30,20 @@ export default class FileInput extends React.Component {
     this.getBase64(event);
   }
 
+  formClassName() {
+    if (this.props.extra === true) {
+      return "file-input extra"
+    }
+    else {
+      return "file-input"
+    }
+  }
+
   render() {
+
     return (
-      <form onChange={this.handleSubmit} className="file-input">
-          <label for="select-images">
+      <form onChange={this.handleSubmit} className={this.formClassName()}>
+          <label htmlFor="select-images">
             <Icon icon={faUpload}/>
           </label>
           <input id="select-images" type="file" ref={this.fileInput} multiple={true} accept="image/*"/>
