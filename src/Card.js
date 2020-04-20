@@ -21,10 +21,14 @@ export default class Card extends Component {
 
 
   render() {
-    return <div className="card-position" style={{transform: `translate(${this.props.cardPosition})`}}
+    return <div className="card-position" style={
+      {transform: `translate(${this.props.cardPosition})`}}
       key={this.props.key}>
     <div className={this.generateClass(this.props.index)}>
-    <div className={'innerCard'}>
+    <div className={'innerCard'} style={
+      {width: `${this.props.cardSize.w}vw`,
+      height: `${this.props.cardSize.h}vh`}
+    }>
     <div className={'back'} onDoubleClick={this.updateState}></div>
     <img alt="card front" className={'front'}
     onDoubleClick={this.updateState}

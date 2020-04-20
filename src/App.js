@@ -24,7 +24,8 @@ class App extends Component {
       cardsStatus: [false, false, false],
       //cards are originally flipped
       cardsPosition: this.setCardsPosition(true),
-      trackedPositions: this.setTrackedPositions(true)
+      trackedPositions: this.setTrackedPositions(true),
+      cardSize: this.setCardSize(true)
       }
 
     this.changeCardStatus = this.changeCardStatus.bind(this);
@@ -38,6 +39,29 @@ class App extends Component {
     this.changeAppPart = this.changeAppPart.bind(this);
     this.setCardsPosition = this.setCardsPosition.bind(this);
 
+  }
+
+  setCardSize(init) {
+    let width;
+    let height;
+    let rows = 1;
+    if (init === true) {
+      width = 23.4;
+      height = 44;
+    }
+    else {
+      let cardNum = this.state.imagesBase64.length;
+      if (cardNum === 3) {
+        width = 23.4;
+        height = 44;
+      }
+      else {
+        rows = Math.ceil(cardNum/4)
+        width = 100/(rows*4.2);
+        height = 71.5/(rows*1.495);
+      }
+    }
+    return {w: width, h: height}
   }
 
   setTrackedPositions(init) {
@@ -54,7 +78,8 @@ class App extends Component {
       trackedPositions[l] = l;
     }
     if (init === true) {return trackedPositions}
-    else {this.setState({trackedPositions: trackedPositions})}
+    else {
+      this.setState({trackedPositions: trackedPositions})}
     }
   setCardsPosition(init) {
     let cardsLength = 3;
@@ -84,15 +109,27 @@ class App extends Component {
       //the 4 is because if the cards is too the left its ugly.
       y = 46.4; }
     else {
-      let cardNum = this.state.imagesBase64.length;
-      x = 2 + index*viewWidth/cardNum;
-      y= 46.4;
+        let cardNum = this.state.imagesBase64.length;
+        let cardfloor = Math.ceil((index+1)/4);
+        x = 2 + ((index)-((cardfloor-1)*4))*viewWidth/4
+        if (cardNum>=4) {
+        if (cardNum===4) {
+          y= 46.4;
+        }
+        else {
+          console.log((index)-((cardfloor-1)*4))
+          if (cardfloor !== 1) {
+          y = 46.4+53.4/2*(cardfloor-1)}
+          else { y=46.4 }
+        }
+        x=x+2*Math.ceil(cardNum/4)
+        //again centering the cards cuz it's prettier this way
+      }
     }
     return `${x}vw, ${y}vh`
     }
 
   switchCardsPositions(index1, index2) {
-    console.log(index1, index2)
     let cardPosition1 = this.state.cardsPosition[index1];
     let cardPosition2 = this.state.cardsPosition[index2];
     let cardsPosition = [...this.state.cardsPosition];
@@ -103,7 +140,6 @@ class App extends Component {
     const key2 = Object.keys(trackedPosition).find(key => trackedPosition[key] === index2);
     trackedPosition[key2] = index1;
     trackedPosition[key1] = index2;
-    console.log(cardsPosition);
     this.setState({cardsPosition: cardsPosition, trackedPositions: trackedPosition})
     }
 
@@ -128,7 +164,6 @@ class App extends Component {
     return this.state.cardsPosition
     }
 
-
   updatePlayers(player) {
     //Also initiates player points
     this.setState({players: [...this.state.players, player],
@@ -152,7 +187,8 @@ class App extends Component {
       cardsStatus: [false, false, false],
       //cards are originally flipped
       cardsPosition: this.setCardsPosition(true),
-      trackedPositions: this.setTrackedPositions(true)})
+      trackedPositions: this.setTrackedPositions(true),
+      cardSize: this.setCardSize(true)})
     }
     if (this.state.appPart === 2) {
     this.setCardsPosition(false);
@@ -160,7 +196,8 @@ class App extends Component {
     this.setState({
       cardsStatus: this.state.imagesBase64.map((e, index) => {
         if (this.state.cardsStatus[index]) {return this.state.cardsStatus[index]}
-        else {return false}})
+        else {return false}}),
+      cardSize: this.setCardSize(false)
         //update with the new card's flip status
       })
     }
@@ -170,7 +207,6 @@ class App extends Component {
     let playerPoints = this.state.playerPoints;
     let newPlayerPoints = [...playerPoints];
     newPlayerPoints[index] = newPlayerPoints[index] + 1;
-    console.log(newPlayerPoints);
     this.setState({
       playerPoints: newPlayerPoints
     })
@@ -180,7 +216,6 @@ class App extends Component {
     let playerPoints = this.state.playerPoints;
     let newPlayerPoints = [...playerPoints];
     newPlayerPoints[index] = newPlayerPoints[index] - 3;
-    console.log(newPlayerPoints);
     this.setState({
       playerPoints: newPlayerPoints
     })
@@ -209,6 +244,7 @@ class App extends Component {
     }
     if (this.state.appPart > 1) {
       display.push(<div key="game"><Game
+        cardSize={this.state.cardSize}
         cardsStatus={this.state.cardsStatus}
         cardsPosition={this.state.cardsPosition}
         trackedPositions={this.state.trackedPositions}

@@ -11,6 +11,7 @@ export default class Game extends Component {
   render() {
   return <div> {this.props.images.map((src, index) => { return <div key={`card${index+1}`} >
   <Card
+    cardSize={this.props.cardSize}
     cardPosition={this.props.cardsPosition[index]}
     index={index}
     cardsStatus={this.props.cardsStatus[index]}
