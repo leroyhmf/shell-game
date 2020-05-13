@@ -96,11 +96,46 @@ margin-right: 5px;
     color: whitesmoke;
     font-size: 19px;
 }
+
+#winner {
+  position: fixed;
+  z-index: 300;
+}
+#winner-msg {
+  line-height: 50%;
+  color: transparent;
+  font-size:3em;
+  z-index:400;
+  -webkit-text-stroke-width: 3px;
+  -webkit-text-stroke-color: rgb(245, 255, 75);
+  padding-right: 8vw;
+}
+
+.trophy-icon {
+    position: absolute;
+    z-index: 99;
+    font-size: 19px;
+    transform: translate(1vw, 2vh);
+    color: darkgrey;
+}
+.balloons {
+  filter: hue-rotate(-216deg);
+  transform: translate(220px, -100px);
+}
+
 .file-input.extra {
     transform: translate(3vw, 34.15vh);
     font-size: 15.2px;
 }
-
+#winner {
+    position:fixed;
+    border-radius: 20px;
+    background-image: url(resources/confetti.gif);
+    background-repeat: repeat;
+    width: 100vw;
+    height: 49vh;
+    text-align: center;
+}
 .file-input > input {
   display: none;
 }

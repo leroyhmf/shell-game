@@ -1,6 +1,7 @@
 import React from 'react';
 import players from './resources/players.png'
 import star from './resources/star.png'
+import balloons from './resources/balloons.gif'
 
 function Scoreboard(props) {
   //Add player by clicking the header Players
@@ -17,7 +18,13 @@ function Scoreboard(props) {
         return stars
       }
 
-    return (<div id="scoreboard"><img alt="players" src={players} id="score-header"
+    return (<div id="scoreboard">
+    {props.hasWinner && <div id="winner">
+    {props.winner.map((w) => <h1 id="winner-msg">{w}</h1>)}
+    <img alt="balloons"
+    className="balloons"
+    src={balloons}/></div>}
+    <img alt="players" src={players} id="score-header"
     onClick={handleHeaderClick}/>
     <table>
     {props.players.map((p, i) => <tr className={`player ${i}`}>

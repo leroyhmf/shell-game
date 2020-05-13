@@ -4,7 +4,7 @@ import FileInput from './FileInput.js';
 import Game from './Game.js';
 import Scoreboard from './Scoreboard.js';
 import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome'
-import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
+import { faChevronLeft, faTrophy } from '@fortawesome/free-solid-svg-icons'
 
 class App extends Component {
   constructor(props) {
@@ -25,7 +25,9 @@ class App extends Component {
       //cards are originally flipped
       cardsPosition: this.setCardsPosition(true),
       trackedPositions: this.setTrackedPositions(true),
-      cardSize: this.setCardSize(true)
+      cardSize: this.setCardSize(true),
+      hasWinner: false,
+      winner: false
       }
 
     this.changeCardStatus = this.changeCardStatus.bind(this);
@@ -38,7 +40,46 @@ class App extends Component {
     this.removePointFromPlayer = this.removePointFromPlayer.bind(this);
     this.changeAppPart = this.changeAppPart.bind(this);
     this.setCardsPosition = this.setCardsPosition.bind(this);
+    this.setWinner = this.setWinner.bind(this);
 
+  }
+
+  setWinner() {
+    let hasWinner = !this.state.hasWinner;
+    let winner;
+    if (hasWinner === false) { winner = false }
+    if (hasWinner === true) {
+      function getWinners(playerPoints, players) {
+        console.log(players);
+        let maxPoints;
+        function max(playerPoints) {
+          if (playerPoints.length === 0) {
+            return -1;
+          }
+
+          let max = playerPoints[0];
+
+        for (let i = 1; i < playerPoints.length; i++) {
+          if (playerPoints[i] > max) {
+            max = playerPoints[i];
+          }
+        }
+
+        return max;
+      }
+      maxPoints = max(playerPoints);
+
+      let winners = [];
+      for(let i = 0; i < playerPoints.length; i++) {
+          if (playerPoints[i] === maxPoints) {
+              winners.push(players[i]);}
+            }
+      return winners
+      }
+
+    winner = getWinners(this.state.playerPoints, this.state.players)
+  }
+    this.setState({hasWinner: hasWinner, winner: winner})
   }
 
   setCardSize(init) {
@@ -239,7 +280,13 @@ class App extends Component {
     let display = []
     if (this.state.appPart === 1) {
       display.push(<div key="fileinput">
-      <FileInput errorHandler={this.errorHandler} manageImages={this.manageImages}/>
+      <FileInput errorHandler={this.errorHandler}
+      manageImages={this.manageImages}/>
+      <Icon
+        className="trophy-icon"
+        icon={faTrophy}
+        onClick={() => this.setWinner()}
+        />
       </div>)
     }
     if (this.state.appPart > 1) {
@@ -250,10 +297,22 @@ class App extends Component {
         trackedPositions={this.state.trackedPositions}
         switchCardsPositions={this.switchCardsPositions}
         images={this.state.imagesBase64}/>
-        <FileInput extra={true} errorHandler={this.errorHandler} manageImages={this.manageImages}/>
-        <Icon icon={faChevronLeft} className="back-button" onClick={() => this.changeAppPart(1)}/></div>)
+        <FileInput extra={true}
+        errorHandler={this.errorHandler}
+        manageImages={this.manageImages}/>
+        <Icon
+          className="trophy-icon"
+          icon={faTrophy}
+          onClick={() => this.setWinner()}
+          />
+        <Icon icon={faChevronLeft}
+        className="back-button"
+        onClick={() => this.changeAppPart(1)}/></div>)
     }
-    display.push(<Scoreboard key="scoreboard" updatePlayers={this.updatePlayers}
+    display.push(<Scoreboard key="scoreboard"
+      winner={this.state.winner}
+      hasWinner={this.state.hasWinner}
+      updatePlayers={this.updatePlayers}
       playerPoints={this.state.playerPoints}
       addStarToPlayer={this.addPointToPlayer}
       removeStarFromPlayer={this.removePointFromPlayer}
