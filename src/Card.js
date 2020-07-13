@@ -31,8 +31,7 @@ export default class Card extends Component {
     }>
     <div className={'back'} onDoubleClick={this.updateState}></div>
     <img alt="card front" className={'front'}
-    onDoubleClick={this.updateState}
-    onDragStart={function(e) {e.preventDefault()}}
+    onClick={this.updateState}
     src={this.props.src}
     />
     </div>
