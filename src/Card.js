@@ -29,7 +29,7 @@ export default class Card extends Component {
       {width: `${this.props.cardSize.w}vw`,
       height: `${this.props.cardSize.h}vh`}
     }>
-    <div className={'back'} onDoubleClick={this.updateState}></div>
+    <div className={'back'} onClick={this.updateState}></div>
     <img alt="card front" className={'front'}
     onClick={this.updateState}
     src={this.props.src}
