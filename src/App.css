@@ -54,10 +54,38 @@ table {
      position: absolute;
      z-index: 100;
 }
+
+.current-player {
+  color: yellow !important;
+}
+
+#memory-card-game {
+  top: 38.5%;
+  align-items: center;
+  display: grid;
+  grid-template-columns: auto auto auto auto auto auto auto auto;
+  justify-items: center;
+  justify-content: center;
+  position: absolute;
+  height: 328px;
+}
+
+.memory-card {
+  perspective: 1000px;
+  margin: 0.8em;
+  z-index: 100;
+  width: 115px;
+  height: 115px;
+}
+.big-card {
+  height: 10.5vw;
+  width: 10.5vw
+}
+
 .card-position {
   transition: transform 2s ease;
 }
- .card.show > .innerCard {
+ .show > .innerCard {
      transform: rotateY(180deg);
 }
 .shuffle-buttons {
@@ -152,4 +180,52 @@ input {
  .front {
      background-color: rgb(0, 19, 96);
      z-index: 2;
+}
+
+#welcome {
+  position: fixed;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  color: #fbfbfb;
+  bottom: 62%;
+  flex-direction: row;
+  align-items: baseline;
+  z-index: 1
+}
+
+.welcome-button {
+  background: none;
+  border: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+  padding-left: 15px;
+}
+
+.welcome-button-pressed {
+  background: none;
+  border: none;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+  padding-left: 15px;
+  color: #ffff65;
+}
+
+#image-display {
+  top: 40%;
+  width: 100%;
+  display: flex;
+  position: fixed;
+  justify-content: center;
+}
+
+.dis-image {
+  width: 100px;
+  height: 100px;
+  background-color: white;
+  margin: 3px;
 }

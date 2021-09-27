@@ -13,6 +13,7 @@ export default class FileInput extends React.Component {
 
 
   getBase64(e) {
+    this.props.updateImagesToProcess(e.target.files.length)
     for (const file of e.target.files) {
       let reader = new FileReader()
       reader.readAsDataURL(file)

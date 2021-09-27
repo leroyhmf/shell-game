@@ -27,7 +27,7 @@ function Scoreboard(props) {
     <img alt="players" src={players} id="score-header"
     onClick={handleHeaderClick}/>
     <table>
-    {props.players.map((p, i) => <tr className={`player ${i}`}>
+    {props.players.map((p, i) => <tr className={`player ${i} ${i===props.currentPlayer && 'current-player'}`}>
     <td onClick={() => props.addStarToPlayer(i)}
     onDoubleClick={() => props.removeStarFromPlayer(i)}>{p}</td>
     {generateStars(i)}</tr>)}

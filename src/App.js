@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import './App.css';
+import './animate.css'
 import FileInput from './FileInput.js';
-import Game from './Game.js';
+import ShellGame from './ShellGame.js';
 import Scoreboard from './Scoreboard.js';
+import Welcome from './Welcome.js';
+import ImgDisplay from './ImgDisplay.js'
+import MemoryCardGame from './MemoryCardGame.js'
 import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft, faTrophy } from '@fortawesome/free-solid-svg-icons'
 
@@ -13,11 +17,13 @@ class App extends Component {
     this.state = {
       appPart: 1,
       /*
-       * 1: Select 3 Photos
-       * 0: Error loading
-       * 2: All three cards are shown
+       * 1: Select Photos / Game
+       * 2: Shell Game
+       * 3: Memory Card Game
        */
+      mode: 1, // Mode 1 = Shell Game, Mode 2 Memory Card Game
       error: false,
+      imagesToProcess: 0,
       players: [],
       playerPoints: [],
       imagesBase64: [],
@@ -27,7 +33,9 @@ class App extends Component {
       trackedPositions: this.setTrackedPositions(true),
       cardSize: this.setCardSize(true),
       hasWinner: false,
-      winner: false
+      winner: false,
+      currentPlayer: false,
+      memoryCardCapacity: 8
       }
 
     this.changeCardStatus = this.changeCardStatus.bind(this);
@@ -41,13 +49,46 @@ class App extends Component {
     this.changeAppPart = this.changeAppPart.bind(this);
     this.setCardsPosition = this.setCardsPosition.bind(this);
     this.setWinner = this.setWinner.bind(this);
+    this.changeMode = this.changeMode.bind(this);
+    this.updateImagesToProcess = this.updateImagesToProcess.bind(this);
+    this.changeMemoryCardCapacity = this.changeMemoryCardCapacity.bind(this);
+    this.updateCurrentPlayer = this.updateCurrentPlayer.bind(this)
+  }
 
+  changeMemoryCardCapacity(n) {
+    this.setState({memoryCardCapacity: n})
+  }
+
+  updateCurrentPlayer(restart) {
+    if (restart) {
+      this.setState({currentPlayer: false})
+      return
+    }
+    if (this.state.currentPlayer === false && this.state.players != []) {
+      this.setState({currentPlayer: 0})
+    }
+    else if (this.state.currentPlayer+1 === this.state.players.length) {
+      this.setState({currentPlayer: 0})
+    }
+    else {
+      this.setState(prevState => {return {currentPlayer: prevState.currentPlayer+1}})
+    }
+  }
+
+  changeMode(m) {
+    this.setState({mode: m}, () => {
+        if (this.state.imagesBase64.length >= 3 && this.state.mode === 1) {
+          this.changeAppPart(2)
+        }
+        if (this.state.imagesBase64.length >= this.state.memoryCardCapacity && this.state.mode === 2) {
+          this.changeAppPart(3)
+        }})
   }
 
   setWinner() {
     let hasWinner = !this.state.hasWinner;
     let winner;
-    if (hasWinner === false) { winner = false }
+    if (hasWinner === false) { winner = [] }
     if (hasWinner === true) {
       function getWinners(playerPoints, players) {
         console.log(players);
@@ -212,13 +253,19 @@ class App extends Component {
   }
 
   changeAppPart(partNum) {
-    if (partNum === 1) {
-      this.setState({appPart: 1},
-      this.updateCards)
+    if (this.state.appPart === 3) {
+      const points = new Array(this.state.players.length).fill(0);
+      this.setState({winner: [], hasWinner: false, playerPoints: points})
     }
-    if (partNum === 2) {
-      this.setState({appPart: 2},
-      this.updateCards)
+    if (partNum === 1 || partNum === 2) {
+      this.setState({appPart: partNum},
+      function() {this.updateCards();
+      this.updateCurrentPlayer(true)}.bind(this)
+    )
+    }
+    if (partNum === 3) {
+      this.setState({appPart: partNum},
+      this.updateCurrentPlayer())
     }
   }
 
@@ -262,15 +309,28 @@ class App extends Component {
     })
   }
 
+  updateImagesToProcess(num) {
+    this.setState({imagesToProcess: this.state.imagesToProcess+num})
+  }
+
   manageImages(image) {
     // if (this.state.imagesBase64.length < 3) {
     //Restrict more than 3 images - commented out
-    this.setState( {imagesBase64: [...this.state.imagesBase64, image]});
-    // }
-    if (this.state.imagesBase64.length >= 3) {
-      this.changeAppPart(2)
-    }
+    //this.setState({imagesBase64: })
+    this.setState({imagesBase64: [...this.state.imagesBase64, image],
+    imagesToProcess: this.state.imagesToProcess-1},
+      () => {
+        if (this.state.imagesBase64.length >= 3 && this.state.mode === 1) {
+        this.changeAppPart(2)
+      }
+      if (this.state.imagesBase64.length >= this.state.memoryCardCapacity && this.state.mode === 2) {
+        this.changeAppPart(3)
+      }
+    })
   }
+
+  // tell the app how many images are being handled at a time
+  //for nice transition between app parts when selecting many images at once
 
   errorHandler(error) {
     this.setState({error: error})
@@ -278,19 +338,33 @@ class App extends Component {
 
   render() {
     let display = []
-    if (this.state.appPart === 1) {
-      display.push(<div key="fileinput">
-      <FileInput errorHandler={this.errorHandler}
-      manageImages={this.manageImages}/>
-      <Icon
+    if ((  this.state.imagesBase64.length+this.state.imagesToProcess < 3 && this.state.mode === 1 )
+       || ( this.state.imagesBase64.length+this.state.imagesToProcess < this.state.memoryCardCapacity && this.state.mode === 2 ))
+        {display.push(<Welcome key="welcome"
+        changeMode={this.changeMode}
+        images={this.state.imagesBase64}
+        mode={this.state.mode}
+        memoryCardCapacity={this.state.memoryCardCapacity}
+        changeMemoryCardCapacity={this.changeMemoryCardCapacity}
+        />)
+        display.push(<ImgDisplay
+        key="img-display"
+        mode={this.state.mode}
+        images={this.state.imagesBase64}
+        />)
+        display.push(<div key="fileinput">
+        <FileInput errorHandler={this.errorHandler}
+        manageImages={this.manageImages}
+        updateImagesToProcess={this.updateImagesToProcess}/>
+        <Icon
         className="trophy-icon"
         icon={faTrophy}
         onClick={() => this.setWinner()}
         />
-      </div>)
+        </div>)
     }
-    if (this.state.appPart > 1) {
-      display.push(<div key="game"><Game
+    if (this.state.appPart === 2) {
+      display.push(<div key="game"><ShellGame
         cardSize={this.state.cardSize}
         cardsStatus={this.state.cardsStatus}
         cardsPosition={this.state.cardsPosition}
@@ -298,6 +372,7 @@ class App extends Component {
         switchCardsPositions={this.switchCardsPositions}
         images={this.state.imagesBase64}/>
         <FileInput extra={true}
+        updateImagesToProcess={this.updateImagesToProcess}
         errorHandler={this.errorHandler}
         manageImages={this.manageImages}/>
         <Icon
@@ -309,6 +384,22 @@ class App extends Component {
         className="back-button"
         onClick={() => this.changeAppPart(1)}/></div>)
     }
+    if (this.state.appPart === 3) {
+      display.push(<div>
+        <MemoryCardGame
+          hasWinner={this.state.hasWinner}
+          images={this.state.imagesBase64}
+          updateCurrentPlayer={this.updateCurrentPlayer}
+          addStarToPlayer={this.addPointToPlayer}
+          playerPoints={this.state.playerPoints}
+          setWinner={this.setWinner}
+          currentPlayer={this.state.currentPlayer}
+        />
+        <Icon icon={faChevronLeft}
+        className="back-button"
+        onClick={() => this.changeAppPart(1)}/>
+        </div>)
+    }
     display.push(<Scoreboard key="scoreboard"
       winner={this.state.winner}
       hasWinner={this.state.hasWinner}
@@ -316,9 +407,9 @@ class App extends Component {
       playerPoints={this.state.playerPoints}
       addStarToPlayer={this.addPointToPlayer}
       removeStarFromPlayer={this.removePointFromPlayer}
-      players={this.state.players}/>)
+      players={this.state.players}
+      currentPlayer={this.state.currentPlayer}/>)
     return display
-
   };
 }
 

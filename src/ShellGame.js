@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Card from './Card.js';
 import ShuffleButton from './ShuffleButton.js';
 
-export default class Game extends Component {
+export default class ShellGame extends Component {
   constructor(props) {
     super(props);
     this.state = {}
