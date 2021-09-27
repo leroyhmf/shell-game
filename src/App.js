@@ -53,10 +53,17 @@ class App extends Component {
     this.updateImagesToProcess = this.updateImagesToProcess.bind(this);
     this.changeMemoryCardCapacity = this.changeMemoryCardCapacity.bind(this);
     this.updateCurrentPlayer = this.updateCurrentPlayer.bind(this)
+    this.removeImage = this.removeImage.bind(this)
   }
 
   changeMemoryCardCapacity(n) {
     this.setState({memoryCardCapacity: n})
+  }
+
+  removeImage(index) {
+    let images = this.state.imagesBase64;
+    images.pop(index);
+    this.setState({imagesBase64: images})
   }
 
   updateCurrentPlayer(restart) {
@@ -347,11 +354,16 @@ class App extends Component {
         memoryCardCapacity={this.state.memoryCardCapacity}
         changeMemoryCardCapacity={this.changeMemoryCardCapacity}
         />)
+        if (this.state.imagesBase64.length>0) {
         display.push(<ImgDisplay
         key="img-display"
         mode={this.state.mode}
         images={this.state.imagesBase64}
-        />)
+        mode={this.state.mode}
+        removeImage={this.removeImage}
+        memoryCardCapacity={this.state.memoryCardCapacity}
+        inProccess={this.state.imagesBase64.length+this.state.imagesToProcess}
+        />) }
         display.push(<div key="fileinput">
         <FileInput errorHandler={this.errorHandler}
         manageImages={this.manageImages}

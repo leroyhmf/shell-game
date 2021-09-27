@@ -205,6 +205,10 @@ input {
   padding-left: 15px;
 }
 
+.welcome-label {
+  color: black
+}
+
 .welcome-button-pressed {
   background: none;
   border: none;
@@ -212,20 +216,36 @@ input {
   cursor: pointer;
   outline: inherit;
   padding-left: 15px;
-  color: #ffff65;
+  color: black;
 }
 
 #image-display {
   top: 40%;
-  width: 100%;
+  width: 80%;
   display: flex;
   position: fixed;
   justify-content: center;
+  flex-wrap:wrap;
+  top: 46vh;
+  left:2vh;
+  background: #ffffff99;
+  color: #b7bdbd;
+  border-radius: 4px;
+  padding: 5px;
 }
 
 .dis-image {
-  width: 100px;
-  height: 100px;
+  width: 11vw;
+  height: 11vw;
   background-color: white;
+  border-radius:7px;
+  margin: 3px;
+}
+.dis-image-more {
+  width:11vw;
+  padding: 5px;
+  align-self: center;
+  background-color: white;
+  border-radius:7px;
   margin: 3px;
 }

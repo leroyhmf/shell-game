@@ -6,7 +6,7 @@ export default class Welcome extends Component {
     this.state = {}
   }
 
-  render() {return <div id="welcome">
+  render() {return <div class="shuffle-buttons">
     <span>Choose your game:</span>
     <button
     className={`${this.props.mode === 1 ? "welcome-button-pressed" : "welcome-button"}`}
@@ -20,8 +20,8 @@ export default class Welcome extends Component {
     onClick={() => {this.props.changeMode(2)}}>
     Memory Card Game
     </button>
-    {this.props.mode === 2 && <input type="number"min="8" value={this.props.memoryCardCapacity}
-    max="12" onChange={(e) => this.props.changeMemoryCardCapacity(e.target.value)}></input>}
+    {this.props.mode === 2 && <label class="welcome-label"> with this # of images: <input type="number"min="8" value={this.props.memoryCardCapacity}
+    max="12" onChange={(e) => this.props.changeMemoryCardCapacity(e.target.value)}></input></label>}
     </div>
   }
 }
