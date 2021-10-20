@@ -10,7 +10,7 @@ function Scoreboard(props) {
     if (enteredNamed) {props.updatePlayers(enteredNamed)}
   }
 
-    function generateStars(i) {
+  function generateStars(i) {
       let stars = [];
         for (let starNum = 0; starNum < props.playerPoints[i]; starNum++ ) {
           stars.push (<td><img alt="star" className="star" src={star}/></td>)
@@ -27,8 +27,11 @@ function Scoreboard(props) {
     <img alt="players" src={players} id="score-header"
     onClick={handleHeaderClick}/>
     <table>
-    {props.players.map((p, i) => <tr className={`player ${i} ${i===props.currentPlayer && 'current-player'}`}>
+    {props.players.map((p, i) => <tr className={`player ${i===props.currentPlayer && 'current-player'}`}
+    key={`player-${i}`}>
     <td onClick={() => props.addStarToPlayer(i)}
+    onContextMenu={(e) => { e.preventDefault();
+                            props.removePlayer(); } }
     onDoubleClick={() => props.removeStarFromPlayer(i)}>{p}</td>
     {generateStars(i)}</tr>)}
     </table>

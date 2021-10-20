@@ -8,7 +8,7 @@ import Welcome from './Welcome.js';
 import ImgDisplay from './ImgDisplay.js'
 import MemoryCardGame from './MemoryCardGame.js'
 import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome'
-import { faChevronLeft, faTrophy } from '@fortawesome/free-solid-svg-icons'
+import { faChevronLeft, faTrophy} from '@fortawesome/free-solid-svg-icons'
 
 class App extends Component {
   constructor(props) {
@@ -35,7 +35,24 @@ class App extends Component {
       hasWinner: false,
       winner: false,
       currentPlayer: false,
-      memoryCardCapacity: 8
+      memoryCardCapacity: 8,
+      memoryCardRestarts: 0,
+      skins: [ // to be continued
+        {
+          name: 'bluesky',
+          background: 'resources/background.jpg',
+          board: 'resources/board.jpg',
+          button: './resources/players.png',
+          star: './resources/star.png',
+        },
+        {
+          name: 'pokemon',
+          background: '',
+          board: '',
+          button: '',
+          star: ''
+        }
+      ]
       }
 
     this.changeCardStatus = this.changeCardStatus.bind(this);
@@ -54,6 +71,8 @@ class App extends Component {
     this.changeMemoryCardCapacity = this.changeMemoryCardCapacity.bind(this);
     this.updateCurrentPlayer = this.updateCurrentPlayer.bind(this)
     this.removeImage = this.removeImage.bind(this)
+    this.restartMemoryCardGame = this.restartMemoryCardGame.bind(this)
+    this.removePlayer = this.removePlayer.bind(this)
   }
 
   changeMemoryCardCapacity(n) {
@@ -66,12 +85,16 @@ class App extends Component {
     this.setState({imagesBase64: images})
   }
 
-  updateCurrentPlayer(restart) {
-    if (restart) {
+  updateCurrentPlayer(back, restart) {
+    if (back) {
       this.setState({currentPlayer: false})
       return
     }
-    if (this.state.currentPlayer === false && this.state.players != []) {
+    if (restart) {
+      this.setState({currentPlayer: 0})
+      return
+    }
+    if (this.state.currentPlayer === false && this.state.players !== []) {
       this.setState({currentPlayer: 0})
     }
     else if (this.state.currentPlayer+1 === this.state.players.length) {
@@ -90,6 +113,15 @@ class App extends Component {
         if (this.state.imagesBase64.length >= this.state.memoryCardCapacity && this.state.mode === 2) {
           this.changeAppPart(3)
         }})
+  }
+
+  removePlayer(playerIndex) {
+    this.setState(prevState => {
+      let players = prevState.players;
+      players.splice(playerIndex, 1)
+      return {
+      players: players
+    }})
   }
 
   setWinner() {
@@ -136,18 +168,18 @@ class App extends Component {
     let rows = 1;
     if (init === true) {
       width = 23.4;
-      height = 44;
+      height = 23.4;
     }
     else {
       let cardNum = this.state.imagesBase64.length;
-      if (cardNum === 3) {
+      if (cardNum <= 4) {
         width = 23.4;
-        height = 44;
+        height = 23.4;
       }
       else {
         rows = Math.ceil(cardNum/4)
         width = 100/(rows*4.2);
-        height = 71.5/(rows*1.495);
+        height = 100/(rows*4.2);
       }
     }
     return {w: width, h: height}
@@ -260,9 +292,8 @@ class App extends Component {
   }
 
   changeAppPart(partNum) {
-    if (this.state.appPart === 3) {
-      const points = new Array(this.state.players.length).fill(0);
-      this.setState({winner: [], hasWinner: false, playerPoints: points})
+    if (this.state.appPart === 3 && partNum === 1) {
+      this.setState({winner: [], hasWinner: false})
     }
     if (partNum === 1 || partNum === 2) {
       this.setState({appPart: partNum},
@@ -343,6 +374,15 @@ class App extends Component {
     this.setState({error: error})
   }
 
+  restartPoints() {
+    const points = new Array(this.state.players.length).fill(0);
+    this.setState({winner: [], hasWinner: false, playerPoints: points})
+  }
+
+  restartMemoryCardGame() {
+    this.setState(prevState=> ({memoryCardRestarts: prevState.memoryCardRestarts+1}))
+  }
+
   render() {
     let display = []
     if ((  this.state.imagesBase64.length+this.state.imagesToProcess < 3 && this.state.mode === 1 )
@@ -356,10 +396,8 @@ class App extends Component {
         />)
         if (this.state.imagesBase64.length>0) {
         display.push(<ImgDisplay
-        key="img-display"
         mode={this.state.mode}
         images={this.state.imagesBase64}
-        mode={this.state.mode}
         removeImage={this.removeImage}
         memoryCardCapacity={this.state.memoryCardCapacity}
         inProccess={this.state.imagesBase64.length+this.state.imagesToProcess}
@@ -399,6 +437,7 @@ class App extends Component {
     if (this.state.appPart === 3) {
       display.push(<div>
         <MemoryCardGame
+          key={`${this.state.memoryCardRestarts}-memorygame`}
           hasWinner={this.state.hasWinner}
           images={this.state.imagesBase64}
           updateCurrentPlayer={this.updateCurrentPlayer}
@@ -406,6 +445,7 @@ class App extends Component {
           playerPoints={this.state.playerPoints}
           setWinner={this.setWinner}
           currentPlayer={this.state.currentPlayer}
+          restart={this.restartMemoryCardGame}
         />
         <Icon icon={faChevronLeft}
         className="back-button"
@@ -420,7 +460,8 @@ class App extends Component {
       addStarToPlayer={this.addPointToPlayer}
       removeStarFromPlayer={this.removePointFromPlayer}
       players={this.state.players}
-      currentPlayer={this.state.currentPlayer}/>)
+      currentPlayer={this.state.currentPlayer}
+      removePlayer={this.removePlayer}/>)
     return display
   };
 }

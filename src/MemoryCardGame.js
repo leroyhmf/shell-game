@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import MemoryCard from './MemoryCard.js'
+import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome'
+import { faEye, faSync } from '@fortawesome/free-solid-svg-icons'
 
 export default class MemoryCardGame extends Component {
   constructor(props) {
@@ -30,10 +32,11 @@ export default class MemoryCardGame extends Component {
     this.callbackCheckMatch = this.callbackCheckMatch.bind(this)
     this.previewCard = this.previewCard.bind(this)
     this.unpreviewCard = this.unpreviewCard.bind(this)
+    this.previewCards = this.previewCards.bind(this)
     this.num1 = 400;
     this.num2 = 2400;
+    this.timeouts = [];
     }
-
     previewCard(index) {
       this.num1 = this.num1+10
       this.num2 = this.num2+10
@@ -42,8 +45,11 @@ export default class MemoryCardGame extends Component {
       this.setState({cards:cards},
           function() {
             if (index<cards.length-1) {
-            setTimeout(function() {this.previewCard(index+1)}.bind(this), this.num1) }
-            setTimeout(function() {this.unpreviewCard(index, true)}.bind(this), this.num2)
+            let timeout1 = setTimeout(function() {this.previewCard(index+1)}.bind(this), this.num1)
+            this.timeouts.push(timeout1)
+           };
+            let timeout2 = setTimeout(function() {this.unpreviewCard(index, true)}.bind(this), this.num2)
+            this.timeouts.push(timeout2)
           }
         )}
     unpreviewCard(index, lastPreview) {
@@ -52,8 +58,19 @@ export default class MemoryCardGame extends Component {
       if (lastPreview === true) {
         this.setState({cards:cards})}
     }
+
+    previewCards() {
+      let timeout = setTimeout(function() {this.previewCard(0)}.bind(this), 270)
+      this.timeouts.push(timeout)
+    }
+
     componentDidMount() {
-        setTimeout(function() {this.previewCard(0)}.bind(this), 270)
+      this.previewCards()
+    }
+
+    componentWillUnmount() {
+      for (const t in this.timeouts) {
+        clearTimeout(t) }
     }
 
     callbackCheckMatch() {
@@ -110,7 +127,20 @@ export default class MemoryCardGame extends Component {
     }
 
     render() {
-      return <div id='memory-card-game'> {this.state.cards.map(card => {
+      return <React.Fragment>
+        <div className='shuffle-buttons'>
+        <Icon
+        className="switch-button"
+        icon={faEye}
+        onClick={() => this.previewCards()}
+        />
+        <Icon
+        className="switch-button"
+        icon={faSync}
+        onClick={() => this.props.restart()}
+        />
+        </div><div id='memory-card-game'>
+       {this.state.cards.map(card => {
         return <MemoryCard
         removeNoMatchAnimation={this.removeNoMatchAnimation}
         size={this.state.cards.length/2}
@@ -119,6 +149,6 @@ export default class MemoryCardGame extends Component {
         key={`mc-${card.id}-${card.type}`}
         src={this.props.images[card.id]}
         checkMatch={this.checkMatch}
-        />} ) }</div>
+        />} ) }</div></React.Fragment>
     }
 }

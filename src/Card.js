@@ -27,7 +27,7 @@ export default class Card extends Component {
     <div className={this.generateClass(this.props.index)}>
     <div className={'innerCard'} style={
       {width: `${this.props.cardSize.w}vw`,
-      height: `${this.props.cardSize.h}vh`}
+      height: `${this.props.cardSize.h}vw`}
     }>
     <div className={'back'} onClick={this.updateState}></div>
     <img alt="card front" className={'front'}

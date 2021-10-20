@@ -17,7 +17,7 @@ export default class ImgDisplay extends Component {
     return <div id="image-display">
     {this.props.images.map((src,index) => {return <img
       className="dis-image" onClick={() => {this.props.removeImage(index)}}
-      key={`dis-${index}`} src={src}/>}) }
+      key={`dis-image-${index}`} src={src}/>}) }
       <div className="dis-image-more">Please select {num} more (Click on an image to remove it)</div>
     </div>
     }

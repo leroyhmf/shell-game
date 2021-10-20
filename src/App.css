@@ -16,6 +16,24 @@ html {
         user-select: none;
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Caveat+Brush&display=swap');
+
+@media screen and (max-width: 1030px) {
+
+#memory-card-game {
+grid-template-columns: auto auto auto auto !important;
+left: 11vw;
+}
+#scoreboard {
+  height: 36vh !important;
+}
+.memory-card {
+  width: 15vw !important;
+  height: 15vw !important;
+}
+
+}
+
 td {
   transform: translate(10px, 10px);
 }
@@ -32,8 +50,13 @@ table {
 }
 
 .player {
-  font-size: 1.8em;
+  font-size: 2.6vw;
   color: whitesmoke;
+  font-family: 'Caveat Brush', cursive;
+}
+
+tr {
+  line-height: 2vw;
 }
 
 #score-header {
@@ -60,7 +83,7 @@ table {
 }
 
 #memory-card-game {
-  top: 38.5%;
+  top: 44%;
   align-items: center;
   display: grid;
   grid-template-columns: auto auto auto auto auto auto auto auto;
@@ -102,10 +125,12 @@ display: inline;
 margin-left: 5px;
 margin-right: 5px;
 }
- .innerCard {
-     transition: 1.9s;
-     transform-style: preserve-3d;
-     position: relative;
+.innerCard {
+    width: 10vw;
+    height: 10vw;
+    transition: 1.9s;
+    transform-style: preserve-3d;
+    position: relative;
 }
  .front, .back {
      backface-visibility: hidden;
